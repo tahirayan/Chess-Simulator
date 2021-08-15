@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap');
+
+body{
+    margin: 0;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    height: 100vh;
+    background: #F9F7F7;
+    font-family: 'Syne Mono', monospace;
+}
+
+/* region Main */
+
+.chess {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-family: 'Syne Mono', monospace;
+    font-size: 25px;
+}
+
+.chess-board {
+    display: grid;
+    grid-template-columns: repeat(8, 12.5%);
+    width: 750px;
+    height: 750px;
+    background: #DBE2EF;
+    border-left: 25px rgba(17,45,78,.6) solid;
+    border-top: 25px rgba(17,45,78,.8) solid;
+    border-right: 25px rgba(17,45,78,1) solid;
+    border-bottom: 25px rgba(17,45,78,.8) solid;
+    box-shadow: 0 0 25px 0 rgba(17,45,78,0.5);
+
+}
+
+.chess-board__aCol,
+.chess-board__bCol,
+.chess-board__cCol,
+.chess-board__dCol,
+.chess-board__eCol,
+.chess-board__fCol,
+.chess-board__gCol,
+.chess-board__hCol {
+    display: grid;
+    grid-template-rows: repeat(8, 12.5%);
+}
+
+.odd div:nth-of-type(odd),
+.even div:nth-of-type(even) {
+    background: #3F72AF;
+}
+
+.a1,
+.b1,
+.c1,
+.d1,
+.e1,
+.f1,
+.g1,
+.h1 {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.a1 {
+     justify-content: space-between;
+ }
+
+.a1,
+.c1,
+.e1,
+.g1,
+.a3,
+.a5,
+.a7 {
+      color: #DBE2EF;
+  }
+
+.b1,
+.d1,
+.f1,
+.h1,
+.a2,
+.a4,
+.a6,
+.a8 {
+     color: #3F72AF;
+ }
+
+.number {
+    align-self: flex-start;
+}
+
+/* endregion */
+
+/* region Input Field */
+
+.input-output {
+    display: grid;
+    grid-template-columns: 45% 55%;
+}
+
+.input-field {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.input-field__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(219,226,239,0.35);
+    padding: 100px 50px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px 0 rgba(219,226,239,0.25);
+}
+
+.input-field__form input {
+    margin: 15px 0;
+    border: none;
+    outline: none;
+    padding: 15px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 0 25px 0 rgba(219,226,239,0.15);
+}
+
+.input-field__form label {
+    color: #3F72AF;
+    font-size: 16px;
+}
+
+.input-text {
+    width: 25px;
+}
+
+.input-btn {
+    color: #DBE2EF;
+    background: #3F72AF;
+    width: 150px;
+    font-family: 'Syne Mono', monospace;
+    font-size: 21px;
+}
+
+/* endregion */
+
+
