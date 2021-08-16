@@ -122,12 +122,20 @@
                 </div>
         </main>
         <aside class="input-output">
-            <div class="output-field"></div>
+            <div class="output-field">
+                <div class="output-field__textsField">
+                    <div class="output-field__texts" id="first">Bishop at A1</div>
+                    <div class="output-field__texts" id="second">Then to H8</div>
+                    <div class="output-field__texts" id="last">Lastly to D4</div>
+                </div>
+                <span class="output-field__scrollDown">SCROLL DOWN</span>
+                <button id="clear-btn" class="output-field__clearBtn" type="reset">&times; CLEAR</button>
+            </div>
             <div class="input-field">
                 <form class="input-field__form">
                     <label for="start">Enter Starting Position</label>
                     <input type="text" id="start" class="input-text" name="start" minlength="2" maxlength="2" size="1">
-                    <label for="target">Enter Targeted Position</label>
+                    <label for="target">Enter Target Position</label>
                     <input type="text" id="target" class="input-text" name="target" minlength="2" maxlength="2" size="1">
                     <input type="submit" id="submit-button" class="input-btn" value="SIMULATE">
                 </form>
