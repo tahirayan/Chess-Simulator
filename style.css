@@ -1,9 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap');
 
-body{
+body {
     margin: 0;
-    display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-rows: auto auto;
     height: 100vh;
     background: #FFEBC9;
     font-family: 'Syne Mono', monospace;
@@ -21,83 +20,66 @@ body{
     height: 100%;
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     font-family: 'Syne Mono', monospace;
-    font-size: 25px;
+    font-size: 1.5rem;
 }
 
 .chess-board {
     display: grid;
-    grid-template-columns: repeat(8, 12.5%);
-    width: 750px;
-    height: 750px;
-    background: #F4DFD0;
-    border-left: 25px rgba(176,91,59,.5) solid;
-    border-top: 25px rgba(176,91,59,.7) solid;
-    border-right: 25px rgba(176,91,59,.85) solid;
-    border-bottom: 25px rgba(176,91,59,.7) solid;
-    box-shadow: 0 0 25px 0 rgba(176,91,59,0.5);
-
-}
-
-.chess-board__aCol,
-.chess-board__bCol,
-.chess-board__cCol,
-.chess-board__dCol,
-.chess-board__eCol,
-.chess-board__fCol,
-.chess-board__gCol,
-.chess-board__hCol {
-    display: grid;
     grid-template-rows: repeat(8, 12.5%);
+    width: 47rem;
+    height: 47rem;
+    background: #F4DFD0;
+    border-left: 1.5rem rgba(176,91,59,.5) solid;
+    border-top: 1.5rem rgba(176,91,59,.7) solid;
+    border-right: 1.5rem rgba(176,91,59,.85) solid;
+    border-bottom: 1.5rem rgba(176,91,59,.7) solid;
+    box-shadow: 0 0 1.5rem 0 rgba(176,91,59,0.5);
+
 }
 
-.odd div:nth-of-type(odd),
-.even div:nth-of-type(even) {
+.row {
+    display: grid;
+    grid-template-columns: repeat(8, 12.5%);
+}
+
+.square {
+    color: #B05B3B;
+}
+
+.row:nth-of-type(even) .square:nth-of-type(odd),
+.row:nth-of-type(odd) .square:nth-of-type(even) {
     background: #B05B3B;
+    color: #F4DFD0;
 }
 
-.a1,
-.b1,
-.c1,
-.d1,
-.e1,
-.f1,
-.g1,
-.h1 {
+.square {
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
+    position: relative;
 }
 
-.a1 {
+.row .square:first-of-type {
      justify-content: space-between;
- }
+    align-items: flex-start;
 
-.a1,
-.c1,
-.e1,
-.g1,
-.a3,
-.a5,
-.a7 {
-      color: #F4DFD0;
-  }
+    & > span:last-of-type {
+        align-self: end;
+      }
+}
 
-.b1,
-.d1,
-.f1,
-.h1,
-.a2,
-.a4,
-.a6,
-.a8 {
-     color: #B05B3B;
- }
-
-.number {
-    align-self: flex-start;
+#piece {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 75%;
+    max-width: 75%;
+    object-fit: contain;
+    z-index: 10;
 }
 
 /* endregion */
@@ -107,6 +89,7 @@ body{
 .input-output {
     display: grid;
     grid-template-columns: 45% 55%;
+    justify-content: center;
 }
 
 .input-field {
@@ -121,39 +104,39 @@ body{
     justify-content: center;
     align-items: center;
     background: rgba(244,233,208,1);
-    padding: 100px 50px;
-    border-radius: 15px;
-    box-shadow: 0 0 25px 0 rgba(176,91,59,0.1);
+    padding: 6rem 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 1.5rem 0 rgba(176,91,59,0.1);
 }
 
 .input-field__form input {
-    margin: 15px 0;
+    margin: 1rem 0;
     border: none;
     outline: none;
-    padding: 15px;
+    padding: 1rem;
     text-align: center;
-    border-radius: 15px;
-    box-shadow: 0 0 25px 0 rgba(176,91,59,0.1);
+    border-radius: 1rem;
+    box-shadow: 0 0 1.5rem 0 rgba(176,91,59,0.1);
 }
 
 .input-field__form label {
     color: #B05B3B;
-    font-size: 20px;
+    font-size: 1.25rem;
 }
 
 .input-text {
     color: #B05B3B;
     font-family: 'Syne Mono', monospace;
-    font-size: 21px;
-    width: 25px;
+    font-size: 1.25rem;
+    width: 1.5rem;
 }
 
 .input-btn {
     color: #F4DFD0;
     background: #B05B3B;
-    width: 150px;
+    width: 13rem;
     font-family: 'Syne Mono', monospace;
-    font-size: 21px;
+    font-size: 1.25rem;
     cursor: pointer;
 }
 
@@ -162,15 +145,17 @@ body{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding: 0 1.25rem;
 }
 
 .output-field__textsField {
     background: #F4DFD0;
-    height: 175px;
+    height: 11rem;
+    width: 100%;
     scroll-behavior: smooth;
     overflow: scroll;
     scroll-snap-type: y mandatory;
-    border-radius: 15px;
+    border-radius: 1rem;
 }
 
 .output-field__textsField > * {
@@ -184,14 +169,14 @@ body{
 .output-field__texts {
     color: #B05B3B;
     text-align: center;
-    padding: 75px;
-    height: 25px;
-    font-size: 32px;
+    padding: 4rem 0;
+    height: 3rem;
+    font-size: 2rem;
 }
 
 .output-field__scrollDown {
-    margin-top: -25px;
-    margin-bottom: 55px;
+    margin-top: -1.5rem;
+    margin-bottom: 3.5rem;
     z-index: 1;
 }
 
@@ -199,18 +184,28 @@ body{
     border: none;
     color: #F4DFD0;
     background: #B05B3B;
-    width: 150px;
+    width: 13rem;
     font-family: 'Syne Mono', monospace;
-    font-size: 21px;
+    font-size: 1.25rem;
     outline: none;
-    padding: 15px;
+    padding: 1rem;
     text-align: center;
-    border-radius: 15px;
-    box-shadow: 0 0 25px 0 rgba(176,91,59,0.1);
+    border-radius: 1rem;
+    box-shadow: 0 0 1.5rem 0 rgba(176,91,59,0.1);
     cursor: pointer;
     z-index: 1;
+    text-decoration: none;
 }
 
 /* endregion */
 
-
+@media screen and (min-width: 1600px) {
+    body {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: none;
+    }
+    .chess {
+        justify-content: flex-end;
+    }
+}
