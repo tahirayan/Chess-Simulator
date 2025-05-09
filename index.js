@@ -157,24 +157,58 @@ const isValidBishopMove = (startFile, startRank, targetFile, targetRank) => {
 simulate.addEventListener("click", (e) => {
   e.preventDefault();
 
+  const existingError = document.querySelector(".error-message");
+  if (existingError) {
+    existingError.remove();
+  }
+
+  const startPos = start.value.trim();
+  const targetPos = target.value.trim();
+
+  const startRegex = /^[A-Ha-h][1-8]$/;
+  if (!startRegex.test(startPos)) {
+    displayErrorMessage(
+      startPos === ""
+        ? "Starting position cannot be empty."
+        : `Invalid starting position "${startPos}". Please enter a letter (A-H) followed by a number (1-8), e.g., "A1".`
+    );
+    return;
+  }
+
+  const targetRegex = /^[A-Ha-h][1-8]$/;
+  if (!targetRegex.test(targetPos)) {
+    displayErrorMessage(
+      targetPos === ""
+        ? "Target position cannot be empty."
+        : `Invalid target position "${targetPos}". Please enter a letter (A-H) followed by a number (1-8), e.g., "H8".`
+    );
+    return;
+  }
+
+  const formattedStartPos = startPos.toUpperCase();
+  const formattedTargetPos = targetPos.toUpperCase();
+
+  const startFile = formattedStartPos[0];
+  const startRank = parseInt(formattedStartPos[1]);
+  const targetFile = formattedTargetPos[0];
+  const targetRank = parseInt(formattedTargetPos[1]);
+
+  if (formattedStartPos === formattedTargetPos) {
+    displayErrorMessage("Starting and target positions cannot be the same.");
+    return;
+  }
+
   input.classList.add("hidden");
   output.classList.remove("hidden");
-
-  const startPos = start.value.toUpperCase();
-  const targetPos = target.value.toUpperCase();
-
-  const startFile = startPos[0];
-  const startRank = parseInt(startPos[1]);
-  const targetFile = targetPos[0];
-  const targetRank = parseInt(targetPos[1]);
 
   textWrapper.innerHTML = "";
 
   if (!isValidBishopMove(startFile, startRank, targetFile, targetRank)) {
-    const errorMessage = document.createElement("p");
-    errorMessage.classList.add("error-message");
-    errorMessage.innerText = `Invalid move! ${bishop.alt} can only move on tiles of the same color.`;
-    document.body.appendChild(errorMessage);
+    displayErrorMessage(
+      `Invalid move! ${bishop.alt} can only move on tiles of the same color.`
+    );
+    input.classList.remove("hidden");
+    output.classList.add("hidden");
     return;
   }
 
@@ -186,7 +220,7 @@ simulate.addEventListener("click", (e) => {
   );
   const numMoves = path.length - 1;
 
-  const startTile = document.getElementById(startPos);
+  const startTile = document.getElementById(formattedStartPos);
   if (startTile) {
     startTile.appendChild(bishop);
   }
@@ -251,3 +285,23 @@ simulate.addEventListener("click", (e) => {
     textWrapper.appendChild(text);
   });
 });
+
+const displayErrorMessage = (message) => {
+  const errorMessage = document.createElement("p");
+  errorMessage.classList.add("error-message");
+  errorMessage.innerText = message;
+
+  const formElement = document.querySelector("form");
+  formElement.parentNode.insertBefore(errorMessage, formElement);
+
+  start.classList.add("input-error");
+  target.classList.add("input-error");
+
+  const clearInputError = () => {
+    start.classList.remove("input-error");
+    target.classList.remove("input-error");
+  };
+
+  start.addEventListener("input", clearInputError);
+  target.addEventListener("input", clearInputError);
+};

@@ -3,8 +3,10 @@
 :root {
   --primary-color: oklch(0.57 0.1199 40.85);
   --secondary-color: oklch(0.95 0.0494 81);
-  --background-color: oklch(0.92 0.0307 57.9);
-  --box-shadow: 0 0 1.5rem 0 oklch(from var(--primary-color) l c h / 0.04);
+  --white-color: oklch(0.92 0.0307 57.9);
+  --error-color: oklch(0.70 0.44 30.85 / 0.6);
+  --box-shadow: 0 0 calc(var(--size-multiplier) * 6) 0
+    oklch(from var(--primary-color) l c h / 0.04);
   --size-multiplier: 0.25rem;
 }
 
@@ -14,13 +16,14 @@ html {
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   display: grid;
   grid-template: repeat(2, auto) / 1fr;
   gap: calc(var(--size-multiplier) * 30);
-  margin: 0;
   height: 100dvh;
   background: var(--secondary-color);
   font-size: calc(var(--size-multiplier) * 6);
@@ -42,19 +45,19 @@ body {
     left: 50%;
     transform: translateX(-50%);
     color: var(--primary-color);
-    font-size: 1.25rem;
+    font-size: calc(var(--size-multiplier) * 5);
     text-align: center;
   }
 
   .button {
     border: none;
-    color: var(--background-color);
+    color: var(--white-color);
     background: var(--primary-color);
-    font-size: 1.25rem;
+    font-size: calc(var(--size-multiplier) * 5);
     outline: none;
-    padding: 1rem 2rem;
+    padding: calc(var(--size-multiplier) * 4) calc(var(--size-multiplier) * 8);
     text-align: center;
-    border-radius: 1rem;
+    border-radius: calc(var(--size-multiplier) * 4);
     box-shadow: var(--box-shadow);
     cursor: pointer;
     z-index: 1;
@@ -69,7 +72,7 @@ body {
     justify-content: center;
     height: 100%;
     width: 100%;
-    padding: 1rem;
+    padding: calc(var(--size-multiplier) * 4);
 
     .chess-board {
       display: grid;
@@ -77,7 +80,7 @@ body {
       width: min(90vw, 90vmin);
       height: min(90vw, 90vmin);
       aspect-ratio: 1 / 1;
-      background: var(--background-color);
+      background: var(--white-color);
       border: calc(var(--size-multiplier) * 3) solid;
       border-left-color: oklch(from var(--primary-color) l c h / 0.5);
       border-top-color: oklch(from var(--primary-color) l c h / 0.7);
@@ -93,7 +96,7 @@ body {
       &:nth-of-type(even) .tile:nth-of-type(odd),
       &:nth-of-type(odd) .tile:nth-of-type(even) {
         background: var(--primary-color);
-        color: var(--background-color);
+        color: var(--white-color);
       }
 
       .tile {
@@ -102,7 +105,11 @@ body {
         align-items: flex-end;
         position: relative;
         color: var(--primary-color);
-        font-size: clamp(0.75rem, 3vmin, 1.5rem);
+        font-size: clamp(
+          calc(var(--size-multiplier) * 3),
+          3vmin,
+          calc(var(--size-multiplier) * 6)
+        );
 
         &:first-of-type {
           justify-content: space-between;
@@ -117,24 +124,23 @@ body {
   }
 
   aside {
-    width: 100%;
-    padding: 1rem;
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    width: 100%;
+    padding: calc(var(--size-multiplier) * 4);
 
     form {
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      gap: 0.75rem;
-      background: var(--background-color);
-      padding: 1rem;
-      border-radius: 1rem;
+      gap: calc(var(--size-multiplier) * 3);
+      background: var(--white-color);
+      padding: calc(var(--size-multiplier) * 4);
+      border-radius: calc(var(--size-multiplier) * 4);
       box-shadow: var(--box-shadow);
-      width: 100%;
-      max-width: 320px;
+      width: clamp(0, 100%, 320px);
 
       &:is(.hidden) {
         display: none;
@@ -144,21 +150,25 @@ body {
         border: var(--size-multiplier) solid
           oklch(from var(--primary-color) l c h / 0.4);
         outline: none;
-        padding: 0.75rem;
+        padding: calc(var(--size-multiplier) * 3);
         text-align: center;
-        border-radius: 1rem;
+        border-radius: calc(var(--size-multiplier) * 4);
         color: var(--primary-color);
-        font-family: "Syne Mono", monospace;
-        font-size: 1.25rem;
+        font-family: inherit;
+        font-size: calc(var(--size-multiplier) * 5);
         text-transform: uppercase;
-        width: 4rem;
-        height: 4rem;
+        width: calc(var(--size-multiplier) * 16);
+        height: calc(var(--size-multiplier) * 16);
         flex-shrink: 0;
+
+        &.input-error {
+          border: calc(var(--size-multiplier) * 2) solid var(--error-color);
+        }
       }
 
       label {
         color: var(--primary-color);
-        font-size: 1rem;
+        font-size: calc(var(--size-multiplier) * 4);
         white-space: nowrap;
         text-align: center;
       }
@@ -169,24 +179,29 @@ body {
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      gap: 1rem;
-      width: 100%;
+      gap: calc(var(--size-multiplier) * 4);
 
       &:is(.hidden) {
         display: none;
       }
 
       .output-text {
-        --font-size: 1.25rem;
+        --font-size: clamp(
+          calc(var(--size-multiplier) * 5),
+          3vmin,
+          calc(var(--size-multiplier) * 8)
+        );
         display: flex;
         flex-direction: column;
-        gap: 0.4rem;
-        background: var(--background-color);
+        gap: calc(var(--size-multiplier) * 1.6);
+        background: var(--white-color);
         scroll-behavior: smooth;
         overflow: scroll;
         scroll-snap-type: y mandatory;
-        border-radius: 1rem;
-        height: calc((var(--font-size) * 1.2) + 8rem);
+        border-radius: calc(var(--size-multiplier) * 4);
+        height: calc(
+          (var(--font-size) * 1.2) + calc(var(--size-multiplier) * 32)
+        );
         width: 100%;
 
         p {
@@ -194,7 +209,7 @@ body {
           scroll-snap-align: start;
           color: var(--primary-color);
           text-align: center;
-          padding: 4rem;
+          padding: calc(var(--size-multiplier) * 16);
           font-size: var(--font-size);
           line-height: 1.2;
           white-space: nowrap;
@@ -206,7 +221,7 @@ body {
       }
 
       span {
-        font-size: 0.875rem;
+        font-size: calc(var(--size-multiplier) * 3.5);
         color: var(--primary-color);
         z-index: 1;
       }
@@ -233,15 +248,9 @@ body {
 
       form {
         flex-direction: row;
-        padding: 1.5rem;
+        padding: calc(var(--size-multiplier) * 6);
         max-width: unset;
         width: unset;
-      }
-
-      .output {
-        .output-text {
-          --font-size: 2rem;
-        }
       }
     }
   }
@@ -260,10 +269,24 @@ body {
 
       form {
         flex-direction: column;
-        padding: 4rem;
+        padding: calc(var(--size-multiplier) * 16);
         width: unset;
         height: unset;
       }
     }
   }
+}
+
+.error-message {
+  position: relative;
+  color: rgba(220, 53, 69, 1);
+  background-color: rgba(220, 53, 69, 0.1);
+  border-radius: calc(var(--size-multiplier) * 4);
+  padding: calc(var(--size-multiplier) * 4) calc(var(--size-multiplier) * 6);
+  margin-bottom: calc(var(--size-multiplier) * 4);
+  font-size: calc(var(--size-multiplier) * 4);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

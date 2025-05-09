@@ -14,20 +14,22 @@
           type="text"
           id="start"
           name="start"
-          pattern="([A-H]{1})([1-8]{1})"
+          pattern="[A-Ha-h][1-8]"
           minlength="2"
           maxlength="2"
           size="1"
+          title="Please enter a valid chess coordinate (A-H followed by 1-8, e.g. A1)"
         />
         <label for="target">Enter Target Position</label>
         <input
           type="text"
           id="target"
           name="target"
-          pattern="([A-H]{1})([1-8]{1})"
+          pattern="[A-Ha-h][1-8]"
           minlength="2"
           maxlength="2"
           size="1"
+          title="Please enter a valid chess coordinate (A-H followed by 1-8, e.g. H8)"
         />
         <button type="submit" class="button" id="simulate" value="SIMULATE">
           SIMULATE
