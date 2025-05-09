@@ -1,7 +1,10 @@
-const simulate = document.getElementById('simulate')
-const start = document.getElementById('start')
-const target = document.getElementById('target')
-const textWrapper = document.getElementById('text')
+const main = document.querySelector('main');
+const output = document.querySelector('.output');
+const input = document.querySelector('form');
+const simulate = document.getElementById('simulate');
+const start = document.getElementById('start');
+const target = document.getElementById('target');
+const textWrapper = document.querySelector('.output-text');
 const bishop = document.createElement('img')
 const BOARD_NUMBER = 1;
 const ROW_NUMBER = 8;
@@ -12,7 +15,11 @@ function setAttributes(el, attrs) {
     el.setAttribute(key, attrs[key]);
   }
 }
-setAttributes(bishop, {'src' : 'images/white.png', 'alt' : 'Bishop Piece', 'id' : 'piece'})
+setAttributes(bishop, {
+  'src': 'images/white.png', 
+  'alt': 'Bishop Piece', 
+  'id': 'piece',
+})
 
 const chess = Array(BOARD_NUMBER).fill(null);
 chess.forEach((board) => {
@@ -26,7 +33,7 @@ chess.forEach((board) => {
     const divs = Array(SQUARE_NUMBER).fill(null);
     divs.forEach((div, j) => {
       div = document.createElement('div');
-      div.classList.add('square');
+      div.classList.add('tile');
       let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
       if (i === ROW_NUMBER - 1) div.innerText = letters[j];
       if (j === 0) div.innerText = `${Math.abs(i - ROW_NUMBER)}`
@@ -40,44 +47,193 @@ chess.forEach((board) => {
     board.appendChild(row);
   });
 
-  window.main.appendChild(board);
+  main.appendChild(board);
 });
 
-const tiles = document.querySelectorAll('.square')
+const tiles = document.querySelectorAll('.tile')
 
-simulate.addEventListener('click', calculate = (e) => {
-  e.preventDefault();
-  const x1 = document.getElementById(`${start.value}`).getBoundingClientRect().left;
-  const y1 = document.getElementById(`${start.value}`).getBoundingClientRect().top;
-  const x2 = document.getElementById(`${target.value}`).getBoundingClientRect().left;
-  const y2 = document.getElementById(`${target.value}`).getBoundingClientRect().top;
-  const x3 = (x1-y2+y1)
-  const y3 = y2
-  const x4 = (x3 + x2 - y3 + y2) / 2
-  const y4 = (y3 - x2 + x3 + y2) / 2
-
-  tiles.forEach((tile, i) => {
-    tile = tiles[i]
-    textWrapper.addEventListener('scroll', nextMove = () => {
-      if (textWrapper.scrollTop <= 176) {
-        if (document.elementFromPoint(x1, y1).id === tile.id) tile.appendChild(bishop)
-      } else if (textWrapper.scrollTop <= 362) {
-        if (document.elementFromPoint(x4, y4).id === tile.id) tile.appendChild(bishop)
-      } else {
-        if (document.elementFromPoint(x2, y2).id === tile.id) tile.appendChild(bishop)
+const calculateBishopPath = (startFile, startRank, targetFile, targetRank) => {
+  const startFileNum = startFile.charCodeAt(0) - 'A'.charCodeAt(0);
+  const targetFileNum = targetFile.charCodeAt(0) - 'A'.charCodeAt(0);
+  
+  const fileDiff = targetFileNum - startFileNum;
+  const rankDiff = targetRank - startRank;
+  
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  
+  if (Math.abs(fileDiff) === Math.abs(rankDiff)) {
+    return [startFile + startRank, targetFile + targetRank];
+  }
+  
+  for (let fileOffset = -7; fileOffset <= 7; fileOffset++) {
+    const intermediateFileNum = startFileNum + fileOffset;
+    if (intermediateFileNum < 0 || intermediateFileNum > 7) continue;
+    
+    const rankOffset = Math.abs(fileOffset);
+    
+    for (let rankDirection of [1, -1]) {
+      const intermediateRank = startRank + (rankOffset * rankDirection);
+      
+      if (intermediateRank < 1 || intermediateRank > 8) continue;
+      
+      const intermediateFile = letters[intermediateFileNum];
+      
+      const intermToTargetFileDiff = targetFileNum - intermediateFileNum;
+      const intermToTargetRankDiff = targetRank - intermediateRank;
+      
+      if (Math.abs(intermToTargetFileDiff) === Math.abs(intermToTargetRankDiff)) {
+        return [startFile + startRank, intermediateFile + intermediateRank, targetFile + targetRank];
       }
-    })
-  })
-
-  const way = Array(3).fill(null)
-  way.forEach((text, i) => {
-    text = document.createElement('p')
-    text.classList.add('output-field__texts')
-    if (i === 0) text.innerText = `Bishop at ${start.value.toUpperCase()}`
-    for (let i = 1; i < way.length - 2; i++) {
-      text.innerText = `Then to ${document.elementFromPoint(x4, y4).id}`
     }
-    if (i === way.length - 1) text.innerText = `Lastly to ${target.value.toUpperCase()}`
-    textWrapper.appendChild(text)
+  }
+
+  const direction = Math.sign(fileDiff) || 1;
+  const rankDirection = Math.sign(rankDiff) || 1;
+  const intermediate1FileNum = startFileNum + direction * 2;
+  const intermediate1Rank = startRank + rankDirection * 2;
+  
+  const intermediate2FileNum = targetFileNum - direction * 2;
+  const intermediate2Rank = targetRank - rankDirection * 2;
+  
+  if (
+    intermediate1FileNum >= 0 && 
+    intermediate1FileNum <= 7 && 
+    intermediate1Rank >= 1 && 
+    intermediate1Rank <= 8 &&
+    intermediate2FileNum >= 0 && 
+    intermediate2FileNum <= 7 && 
+    intermediate2Rank >= 1 && 
+    intermediate2Rank <= 8
+  ) {
+    return [
+      startFile + startRank, 
+      letters[intermediate1FileNum] + intermediate1Rank,
+      letters[intermediate2FileNum] + intermediate2Rank,
+      targetFile + targetRank
+    ];
+  }
+  
+  const fallbackFileNum = startFileNum + direction;
+  const fallbackRank = startRank + rankDirection;
+  
+  if (
+    fallbackFileNum >= 0 && 
+    fallbackFileNum <= 7 && 
+    fallbackRank >= 1 && 
+    fallbackRank <= 8
+  ) {
+    return [
+      startFile + startRank,
+      letters[fallbackFileNum] + fallbackRank,
+      targetFile + targetRank
+    ];
+  }
+  
+  return [startFile + startRank, targetFile + targetRank];
+}
+
+const getTileColor = (file, rank) => {
+  const fileNum = file.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
+  
+  return (fileNum + rank) % 2 === 0 ? 'black' : 'white';
+}
+
+const isValidBishopMove = (startFile, startRank, targetFile, targetRank) => {
+  const startColor = getTileColor(startFile, startRank);
+  const targetColor = getTileColor(targetFile, targetRank);
+  
+  return startColor === targetColor;
+}
+
+simulate.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  input.classList.add('hidden');
+  output.classList.remove('hidden');
+  
+  const startPos = start.value.toUpperCase();
+  const targetPos = target.value.toUpperCase();
+  
+  const startFile = startPos[0];
+  const startRank = parseInt(startPos[1]);
+  const targetFile = targetPos[0];
+  const targetRank = parseInt(targetPos[1]);
+  
+  textWrapper.innerHTML = '';
+  
+  if (!isValidBishopMove(startFile, startRank, targetFile, targetRank)) {
+    const errorMessage = document.createElement('p');
+    errorMessage.classList.add('error-message');
+    errorMessage.innerText = `Invalid move! ${bishop.alt} can only move on tiles of the same color.`;
+    document.body.appendChild(errorMessage);
+    return;
+  }
+  
+  const path = calculateBishopPath(startFile, startRank, targetFile, targetRank);
+  const numMoves = path.length - 1;
+  
+  const startTile = document.getElementById(startPos);
+  if (startTile) {
+    startTile.appendChild(bishop);
+  }
+  
+  const positions = {};
+  path.forEach((pos, index) => {
+    const posElement = document.getElementById(pos);
+    if (posElement) {
+      positions[index] = {
+        id: pos,
+        x: posElement.getBoundingClientRect().left,
+        y: posElement.getBoundingClientRect().top
+      };
+    }
   });
-})
+  
+  const numPositions = path.length;
+  const scrollThreshold = textWrapper.clientHeight;
+  
+  const handleScroll = (tile) => {
+    const scrollTop = textWrapper.scrollTop;
+    let currentPositionIndex = Math.min(
+      Math.floor(scrollTop / scrollThreshold),
+      numPositions - 1
+    );
+    
+    currentPositionIndex = Math.max(0, currentPositionIndex);
+    
+    const currentPosition = positions[currentPositionIndex];
+    
+    if (currentPosition && tile.id === currentPosition.id) {
+      tile.appendChild(bishop);
+    } else if (tile.contains(bishop)) {
+      tile.removeChild(bishop);
+    }
+  };
+  
+  tiles.forEach(tile => {
+    textWrapper.removeEventListener('scroll', () => handleScroll(tile));
+  });
+  
+  textWrapper.addEventListener('scroll', () => {
+    tiles.forEach(tile => handleScroll(tile));
+  });
+  
+  tiles.forEach(tile => handleScroll(tile));
+  
+  const moveSteps = [];
+  path.forEach((pos, index) => {
+    if (index === 0) {
+      moveSteps.push(`Bishop at ${pos}`);
+    } else {
+      moveSteps.push(`Move ${index}: to ${pos}`);
+    }
+  });
+  
+  moveSteps.push(`Total moves: ${numMoves}`);
+  
+  moveSteps.forEach(step => {
+    const text = document.createElement('p');
+    text.innerText = step;
+    textWrapper.appendChild(text);
+  });
+});

@@ -1,29 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="style.css">
-  <title>Çap Gitme Similatör</title>
-</head>
-<body>
-<main class="chess" id="main"></main>
-<aside class="input-output">
-  <div class="output-field">
-    <div class="output-field__textsField" id="text">
-    </div>
-    <span class="output-field__scrollDown">SCROLL DOWN</span>
-    <a href="./index.html" class="output-field__clearBtn" type="reset">&times; CLEAR</a>
-  </div>
-  <div class="input-field">
-    <form class="input-field__form">
-      <label for="start">Enter Starting Position</label>
-      <input type="text" id="start" class="input-text" name="start" pattern="([A-H]{1})([1-8]{1})" minlength="2" maxlength="2" size="1" style="text-transform:uppercase" >
-      <label for="target">Enter Target Position</label>
-      <input type="text" id="target" class="input-text" name="target" pattern="(?=.*[A-H])(?=.*\[1-8])" minlength="2" maxlength="2" size="1" style="text-transform:uppercase" >
-      <input type="submit" id="simulate" class="input-btn" value="SIMULATE">
-    </form>
-  </div>
-</aside>
-<script src="./index.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Çap Gitme Similatör</title>
+  </head>
+  <body>
+    <main></main>
+    <aside>
+      <form>
+        <label for="start">Enter Starting Position</label>
+        <input type="text" id="start" name="start" pattern="([A-H]{1})([1-8]{1})" minlength="2" maxlength="2" size="1" >
+        <label for="target">Enter Target Position</label>
+        <input type="text" id="target" name="target" pattern="([A-H]{1})([1-8]{1})" minlength="2" maxlength="2" size="1" >
+        <button type="submit" class="button" id="simulate" value="SIMULATE">SIMULATE</button>
+      </form>
+      <div class="output hidden">
+        <div class="output-text">
+        </div>
+        <span>SCROLL DOWN INSIDE THE BOX</span>
+        <a type="reset" href="./index.html" class="button">&times; CLEAR</a>
+      </div>
+    </aside>
+    <script src="./index.js"></script>
+  </body>
 </html>
