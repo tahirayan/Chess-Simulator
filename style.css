@@ -277,16 +277,3 @@ body {
   }
 }
 
-.error-message {
-  position: relative;
-  color: rgba(220, 53, 69, 1);
-  background-color: rgba(220, 53, 69, 0.1);
-  border-radius: calc(var(--size-multiplier) * 4);
-  padding: calc(var(--size-multiplier) * 4) calc(var(--size-multiplier) * 6);
-  margin-bottom: calc(var(--size-multiplier) * 4);
-  font-size: calc(var(--size-multiplier) * 4);
-  text-align: center;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
