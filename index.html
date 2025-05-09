@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
     <title>Çap Gitme Similatör</title>
   </head>
   <body>
@@ -10,14 +10,31 @@
     <aside>
       <form>
         <label for="start">Enter Starting Position</label>
-        <input type="text" id="start" name="start" pattern="([A-H]{1})([1-8]{1})" minlength="2" maxlength="2" size="1" >
+        <input
+          type="text"
+          id="start"
+          name="start"
+          pattern="([A-H]{1})([1-8]{1})"
+          minlength="2"
+          maxlength="2"
+          size="1"
+        />
         <label for="target">Enter Target Position</label>
-        <input type="text" id="target" name="target" pattern="([A-H]{1})([1-8]{1})" minlength="2" maxlength="2" size="1" >
-        <button type="submit" class="button" id="simulate" value="SIMULATE">SIMULATE</button>
+        <input
+          type="text"
+          id="target"
+          name="target"
+          pattern="([A-H]{1})([1-8]{1})"
+          minlength="2"
+          maxlength="2"
+          size="1"
+        />
+        <button type="submit" class="button" id="simulate" value="SIMULATE">
+          SIMULATE
+        </button>
       </form>
       <div class="output hidden">
-        <div class="output-text">
-        </div>
+        <div class="output-text"></div>
         <span>SCROLL DOWN INSIDE THE BOX</span>
         <a type="reset" href="./index.html" class="button">&times; CLEAR</a>
       </div>
